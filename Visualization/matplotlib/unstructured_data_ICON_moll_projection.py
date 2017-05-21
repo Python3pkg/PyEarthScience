@@ -14,7 +14,7 @@ from   netCDF4 import Dataset as open_ncfile
 import numpy as np
 
 t1 = time.time()                                   #-- retrieve start time
-print ""
+print("")
 
 #--  define variables
 diri    = "./"                                     #-- data directory
@@ -37,9 +37,9 @@ if not hasattr(var,"_FillValue"):
 if not hasattr(var,"missing_value"):
    var.missing_value =  np.array(1.e20,dtype='f')  #-- set missing_value
 
-print "-----------------------"
-print f.variables["ta"]                            #-- like printVarSummary
-print "-----------------------"
+print("-----------------------")
+print(f.variables["ta"])                            #-- like printVarSummary
+print("-----------------------")
 
 title    = "ICON:  Surface temperature"            #-- title string
 varMin   = -32                                     #-- data minimum
@@ -74,14 +74,14 @@ x =  x * rad2deg                                   #-- cell center, lon
 y =  y * rad2deg                                   #-- cell center, lat
 
 #-- convert latitude/longitude values to plot x/y values
-x0, y0 = map(x,y)
+x0, y0 = list(map(x,y))
 
 #-- information
-print ""
-print "Cell points:           ", nv
-print "Cells:                 ", str(ncells)
-print "Variable ta   min/max:  %.2f " % np.min(var) + "/" + " %.2f" % np.max(var)
-print ""
+print("")
+print("Cell points:           ", nv)
+print("Cells:                 ", str(ncells))
+print("Variable ta   min/max:  %.2f " % np.min(var) + "/" + " %.2f" % np.max(var))
+print("")
 
 #-- create figure and axes instances
 fig = plt.figure(figsize=(8,8))
@@ -91,7 +91,7 @@ ax  = fig.add_axes([0.1,0.1,0.8,0.9])
 varMin = -32                                       #-- data minimum
 varMax =  28                                       #-- data maximum
 varInt =   4                                       #-- data increment
-levels =  range(varMin,varMax,varInt)              #-- set levels array
+levels =  list(range(varMin,varMax,varInt))              #-- set levels array
 
 #-- contour levels
 clevs = np.arange(varMin,varMax,varInt)
@@ -118,5 +118,5 @@ plt.savefig('plot_compare_ICON_matplotlib_mollweide.png', bbox_inches='tight')
 
 #-- get wallclock time
 t2 = time.time()
-print "Wallclock time:  %0.3f seconds" % (t2-t1)
-print ""
+print("Wallclock time:  %0.3f seconds" % (t2-t1))
+print("")

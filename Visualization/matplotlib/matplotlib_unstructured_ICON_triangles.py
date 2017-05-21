@@ -49,7 +49,7 @@ nummissing = np.count_nonzero(varM.mask)            #-- number of missing values
 
 #-- set data intervals, levels, labels, color indices
 varMin, varMax, varInt = -32, 28, 4                 #-- set data minimum, maximum, interval
-levels =  range(varMin,varMax,varInt)               #-- set levels array
+levels =  list(range(varMin,varMax,varInt))               #-- set levels array
 nlevs  =  len(levels)                               #-- number of levels
 labels = ['{:.2f}'.format(x) for x in levels]       #-- convert list of floats to list of strings
 
@@ -88,7 +88,7 @@ def rearrange(vlon_ar):
 vlon_1d = rearrange(vlon_1d)                        #-- set longitude values to -180.-180. degrees
 
 #-- convert latitude/longitude values to map x/y values
-x0v, y0v = map(vlon_1d, vlat_1d)
+x0v, y0v = list(map(vlon_1d, vlat_1d))
 
 #-- assign and set polygon array for polygons of type Nx2
 xy = np.ndarray([ncells*nv,2],np.float32)
@@ -96,15 +96,15 @@ xy[:,0] = x0v
 xy[:,1] = y0v
 
 #-- print information to stdout
-print ''
-print 'Cell points:           ', nv
-print 'Cells:                 ', str(ncells)
-print 'Variable ta   min/max:  %.2f ' % np.min(var) + '/' + ' %.2f' % np.max(var)
-print ''
+print('')
+print('Cell points:           ', nv)
+print('Cells:                 ', str(ncells))
+print('Variable ta   min/max:  %.2f ' % np.min(var) + '/' + ' %.2f' % np.max(var))
+print('')
 
 #-- define color map
 cmap     = plt.get_cmap('Spectral_r', nlevs+1)              #-- read the color map
-bounds   = range(varMin,varMax,varInt)                      #-- set bounds for color bar
+bounds   = list(range(varMin,varMax,varInt))                      #-- set bounds for color bar
 bounds2  = [(varMin-varInt)] + bounds + [(varMax+varInt)]   #-- add color to the right and left
 norm     = mpl.colors.BoundaryNorm(bounds, cmap.N)          #-- normalize for color bar
 cmaplist = [i for i in range(cmap.N)]                       #-- color bar indices
@@ -112,20 +112,20 @@ ncol     = len(cmaplist)                                    #-- number of colors
 colors   = np.ndarray([ncells+1,4],np.float32)              #-- assign color array for triangles
 white    = [[1.,1.,1.,1.]]
 
-print ''
-print 'levels:           ',levels
-print 'nlevs:            %3d' %nlevs
-print 'ncols:            %3d' %ncol
-print ''
+print('')
+print('levels:           ',levels)
+print('nlevs:            %3d' %nlevs)
+print('ncols:            %3d' %ncol)
+print('')
 
 #-- set color index of all cells in between levels
-for m in xrange(0,nlevs):
+for m in range(0,nlevs):
     vind = []                                               #-- empty list for color indices
-    for i in xrange(0,ncells-1):
+    for i in range(0,ncells-1):
         if (varM[i] >= levels[m] and varM[i] < levels[m+1]):
            colors[i,:] = cmap(cmaplist[m+1])
            vind.append(i) 
-    print 'finished level %3d' % m , ' -- %5d ' % len(vind) , ' polygons considered'
+    print('finished level %3d' % m , ' -- %5d ' % len(vind) , ' polygons considered')
     del vind
 
 colors[np.where(varM < varMin),:]  = cmap(cmaplist[0])      #-- set color index for cells less than level[0]
@@ -162,10 +162,10 @@ for i in range(0,ncells-1):
        ax.add_patch(polygon)
     j = j + nv
 
-print ''
-print '---> %5d' % icha + ' triangles longitude value + 360.'
-print '---> %5d' % icut + ' triangles cut off'
-print ''
+print('')
+print('---> %5d' % icha + ' triangles longitude value + 360.')
+print('---> %5d' % icut + ' triangles cut off')
+print('')
 
 #-- add a color bar
 ax   = fig.add_axes([0.15, 0.15, 0.75, 0.03])               #-- l, b, w, h
@@ -184,5 +184,5 @@ plt.savefig('plot_unstructured_ICON_triangles.png', bbox_inches='tight')
     
 #-- get wallclock time
 t2 = time.time()
-print 'Wallclock time:  %0.3f seconds' % (t2-t1)
-print ''
+print('Wallclock time:  %0.3f seconds' % (t2-t1))
+print('')

@@ -45,21 +45,21 @@ nummissing = np.count_nonzero(varM.mask)            #-- number of missing values
 #-- set data intervals, levels, labels, color indices
 varMin, varMax, varInt = -32, 28, 4                 #-- set data minimum, maximum, interval
  
-levels   =  range(varMin,varMax,varInt)             #-- set levels array
+levels   =  list(range(varMin,varMax,varInt))             #-- set levels array
 nlevs    =  len(levels)                             #-- number of levels
 labels   =  ['{:.2f}'.format(x) for x in levels]    #-- convert list of floats to list of strings
-colors   =  range(2,nlevs+6)                        #-- create color indices
+colors   =  list(range(2,nlevs+6))                        #-- create color indices
 
 #-- print info to stdout
-print ''
-print 'min/max:          %.2f' %np.min(varM) + ' /' + ' %.2f' %np.max(varM)
-print ''
-print 'varMin:           %3d' %varMin
-print 'varMax:           %3d' %varMax
-print 'varInt:           %3d' %varInt
-print ''
-print 'missing_value:    ', missing
-print 'missing values:   ', nummissing
+print('')
+print('min/max:          %.2f' %np.min(varM) + ' /' + ' %.2f' %np.max(varM))
+print('')
+print('varMin:           %3d' %varMin)
+print('varMax:           %3d' %varMax)
+print('varInt:           %3d' %varInt)
+print('')
+print('missing_value:    ', missing)
+print('missing values:   ', nummissing)
 #-------------------------------------------------------------------
 #-- define the x-, y-values and the polygon points
 #-------------------------------------------------------------------
@@ -73,10 +73,10 @@ vlat, vlon =  vlat*rad2deg, vlon * rad2deg          #-- cell latitude/longitude 
 ncells, nv =  vlon.shape                            #-- ncells: number of cells; nv: number of edges
 
 #-- print information to stdout
-print ''
-print 'cell points:      ', nv
-print 'cells:            ', str(ncells)
-print ''
+print('')
+print('cell points:      ', nv)
+print('cells:            ', str(ncells))
+print('')
 
 #-- rearrange the longitude values to -180.-180.
 def rearrange(vlon):
@@ -88,9 +88,9 @@ def rearrange(vlon):
 
 vlon = rearrange(vlon)                              #-- set longitude values to -180.-180. degrees
 
-print 'min/max vlon:     ', np.min(vlon), np.max(vlon)
-print 'min/max vlat:     ', np.min(vlat), np.max(vlat)
-print ''
+print('min/max vlon:     ', np.min(vlon), np.max(vlon))
+print('min/max vlat:     ', np.min(vlat), np.max(vlat))
+print('')
 
 #-- open a workstation for second plot:  triangles plot
 wkres =  Ngl.Resources()
@@ -106,14 +106,14 @@ colormap =  cmap[:ncmap:12,:]                       #-- select every 13th color
 ncol     =  colormap.shape[0]
 colormap[20] = ([1.,1.,1.])                         #-- white for missing values
 
-print 'colors index:     ', colors 
-print ''
-print 'levels:           ',levels
-print 'labels:           ',labels
-print ''
-print 'nlevs:            %3d' %nlevs
-print 'ncols:            %3d' %ncol
-print ''
+print('colors index:     ', colors) 
+print('')
+print('levels:           ',levels)
+print('labels:           ',labels)
+print('')
+print('nlevs:            %3d' %nlevs)
+print('ncols:            %3d' %ncol)
+print('')
 
 #-- overwrite resources of wks1
 setlist                    =  Ngl.Resources()
@@ -139,13 +139,13 @@ Ngl.draw(map)
 gscolors = -1*(np.ones((ncells,),dtype=np.int))     #-- assign array containing zeros; init to transparent: -1
 
 #-- set color index of all cells in between levels
-for m in xrange(0,nlevs):
+for m in range(0,nlevs):
     vind = []                                       #-- empty list for color indices
-    for i in xrange(0,ncells-1):
+    for i in range(0,ncells-1):
         if (varM[i] >= levels[m] and varM[i] < levels[m+1]):
            gscolors[i] = colors[m+1]
            vind.append(i)
-    print 'finished level %3d' % m , ' -- %5d ' % len(vind) , ' polygons considered - gscolors %3d' % colors[m]
+    print('finished level %3d' % m , ' -- %5d ' % len(vind) , ' polygons considered - gscolors %3d' % colors[m])
     del vind
 
 gscolors[varM < varMin]         =  colors[0]        #-- set color index for cells less than level[0]
@@ -159,7 +159,7 @@ pgres.gsFillIndex       =  0                        #-- solid fill
 pgres.gsLineColor       = 'black'                   #-- edge line color
 pgres.gsLineThicknessF  =  0.7                      #-- line thickness
 pgres.gsColors          =  gscolors                 #-- use color array
-pgres.gsSegments        =  range(0,len(vlon[:,0])*3,3) #-- define segments array
+pgres.gsSegments        =  list(range(0,len(vlon[:,0])*3,3)) #-- define segments array
 
 x1d, y1d = np.ravel(vlon), np.ravel(vlat)           #-- convert to 1D-arrays
 
@@ -189,8 +189,8 @@ Ngl.frame(wks1)
 
 #-- get wallclock time
 t2 = time.time()
-print ''
-print 'Wallclock time:  %0.3f seconds' % (t2-t1)
-print ''
+print('')
+print('Wallclock time:  %0.3f seconds' % (t2-t1))
+print('')
 
 Ngl.end()

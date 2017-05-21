@@ -38,7 +38,7 @@ map.drawparallels(np.arange( -90., 90.,30.),labels=[1,0,0,0],fontsize=10)
 map.drawmeridians(np.arange(-180.,180.,30.),labels=[0,0,0,1],fontsize=10)
 
 #-- convert latitude/longitude values to plot x/y values
-x, y = map(*np.meshgrid(lon,lat))
+x, y = list(map(*np.meshgrid(lon,lat)))
 
 #-- contour levels
 clevs = np.arange(210,320,5)

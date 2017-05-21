@@ -22,10 +22,10 @@ lon = nc.variables['lon'][:]
 
 u, lonsout = addcyclic(u10, lon)
 v, lonsout = addcyclic(v10, lon)
-print "lon[0]: ", lonsout[0], "lon[-1]: ", lonsout[-1]
-print "lat[0]: ", lat[0], "lat[-1]: ", lat[-1]
-print lonsout[:]
-print lat[:]
+print("lon[0]: ", lonsout[0], "lon[-1]: ", lonsout[-1])
+print("lat[0]: ", lat[0], "lat[-1]: ", lat[-1])
+print(lonsout[:])
+print(lat[:])
 
 #-- create figure and axes instances
 fig = plt.figure(figsize=(8,8))
@@ -45,7 +45,7 @@ map.drawparallels(np.arange( -90., 90.,30.),labels=[1,0,0,0],fontsize=10)
 map.drawmeridians(np.arange(-180.,180.,30.),labels=[0,0,0,1],fontsize=10)
 
 #-- convert latitude/longitude values to plot x/y values
-x, y = map(*np.meshgrid(lon,lat))
+x, y = list(map(*np.meshgrid(lon,lat)))
 
 #-- transform vector and coordinate data
 veclon = u10.shape[1]/2                    #-- only every 2nd vector
